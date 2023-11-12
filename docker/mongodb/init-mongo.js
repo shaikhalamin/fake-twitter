@@ -5,4 +5,5 @@ db.auth(
 );
 
 db = db.getSiblingDB('twitter_app');
+db = db.getSiblingDB('test');
 db.createCollection('test_docker');

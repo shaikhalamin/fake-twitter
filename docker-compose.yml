@@ -16,7 +16,7 @@ services:
       - /var/www/html/vendor
     depends_on:
       mongodb_twitter:
-        condition: service_completed_successfully
+        condition: service_healthy
     networks:
       - twitter-network
   
@@ -24,6 +24,12 @@ services:
     image: mongo:latest
     container_name: mongodb_twitter_container
     restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
