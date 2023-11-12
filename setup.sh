@@ -22,5 +22,7 @@ echo "Backend cache clearing ..."
 docker exec -it backend-container php artisan cache:clear
 echo "Backend config cache ..."
 docker exec -it backend-container php artisan config:cache
+echo "Migrating backend schema...."
+docker exec -it backend-container php artisan migrate:fresh
 
 echo "Please visit http://localhost:7890 to visit the app"
