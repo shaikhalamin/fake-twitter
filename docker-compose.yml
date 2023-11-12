@@ -1,0 +1,54 @@
+version: "3"
+
+networks:
+  twitter-network:
+
+services:
+  backend-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-container
+    ports:
+      - '9000:8000'
+    volumes:
+      - ./backend:/var/www/html
+      - /var/www/html/vendor
+    depends_on:
+      - mongodb_twitter
+    networks:
+      - twitter-network
+  
+  mongodb_twitter:
+    image: mongo:latest
+    container_name: mongodb_twitter_container
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    command:
+      - '--logpath'
+      - '/var/log/mongodb/mongod.log'
+    ports:
+      - ${MONGO_DATABASE_PORT}:27017
+    volumes:
+      - ./docker/mongodb/data:/data/db
+      - ./docker/mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    networks:
+      - twitter-network
+
+  frontend-service:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-container
+    command: npm run serve
+    depends_on:
+      - backend-service
+    ports:
+      - 7890:8080
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - twitter-network

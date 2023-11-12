@@ -1,0 +1,3 @@
+docker/mongodb/data/*
+!docker/mongodb/data/.gitkeep
+.env
