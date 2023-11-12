@@ -1,13 +1,13 @@
 #!/bin/bash
 
-echo "Stoping all container ..."
-docker-compose down --remove-orphans
-
 echo "Docker compose env copying ..."
 cp .env.example .env
 
 echo "Backend env copying ..."
 cp backend/.env.example backend/.env
+
+echo "Stoping all container ..."
+docker-compose down --remove-orphans
 
 # echo "Frontend env copying ..."
 # cp frontend/.env.example frontend/.env

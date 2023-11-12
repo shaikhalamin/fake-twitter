@@ -15,7 +15,8 @@ services:
       - ./backend:/var/www/html
       - /var/www/html/vendor
     depends_on:
-      - mongodb_twitter
+      mongodb_twitter:
+        condition: service_started
     networks:
       - twitter-network
   
