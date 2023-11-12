@@ -14,10 +14,8 @@ class CreateLikesTable extends Migration
     public function up()
     {
         Schema::connection('mongodb')->create('likes', function (Blueprint $table) {
-            $table->objectId('tweetId')->index('tweetId');
-            $table->objectId('userId')->index('userId');
-            $table->reference('tweetId', 'Tweet');
-            $table->reference('userId', 'User');
+            $table->objectId('tweet_id')->index('tweetId');
+            $table->objectId('user_id')->index('userId');
             $table->timestamps();
         });
     }

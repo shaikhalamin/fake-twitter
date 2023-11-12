@@ -55,4 +55,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Follow::class, 'followee');
     }
+
+    //below all working relational setup
+
+    public function tweets()
+    {
+        return $this->hasMany(Tweet::class, 'user_id');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'user_id');
+    }
 }

@@ -13,7 +13,7 @@ class StoreLikeRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreLikeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id' => 'required|string|exists:users,_id',
+            'tweet_id' => 'required|string|exists:tweets,_id',
         ];
     }
 }

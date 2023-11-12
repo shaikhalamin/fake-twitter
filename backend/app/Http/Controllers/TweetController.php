@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTweetRequest;
 use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Tweet;
+use App\Models\User;
 
 class TweetController extends Controller
 {
@@ -15,17 +16,7 @@ class TweetController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Tweet::with(['user','likes'])->paginate(20);
     }
 
     /**
@@ -36,7 +27,11 @@ class TweetController extends Controller
      */
     public function store(StoreTweetRequest $request)
     {
-        //
+        $tweet =  Tweet::create($request->validated());
+        $user = User::where('_id', $request->get('user_id'))->first();
+        $user->tweets()->saveMany([$tweet]);
+
+        return $tweet;
     }
 
     /**
@@ -47,18 +42,7 @@ class TweetController extends Controller
      */
     public function show(Tweet $tweet)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Tweet  $tweet
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Tweet $tweet)
-    {
-        //
+        return $tweet;
     }
 
     /**

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLikeRequest;
 use App\Http\Requests\UpdateLikeRequest;
 use App\Models\Like;
+use App\Models\Tweet;
+use App\Models\User;
 
 class LikeController extends Controller
 {
@@ -36,7 +38,14 @@ class LikeController extends Controller
      */
     public function store(StoreLikeRequest $request)
     {
-        //
+        $like = Like::create($request->validated());
+        $user = User::where('_id', $request->get('user_id'))->first();
+        $user->likes()->saveMany([$like]);
+
+        $tweet = Tweet::where('_id', $request->get('tweet_id'))->first();
+        $tweet->likes()->saveMany([$like]);
+
+        return $like;
     }
 
     /**
