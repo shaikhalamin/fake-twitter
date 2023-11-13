@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Authentication\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -48,12 +47,12 @@ class User extends Authenticatable
 
     public function followers()
     {
-        return $this->hasMany(Follow::class, 'follower');
+        return $this->hasMany(Follow::class, 'follower_id');
     }
 
-    public function followees()
+    public function following()
     {
-        return $this->hasMany(Follow::class, 'followee');
+        return $this->hasMany(Follow::class, 'following_id');
     }
 
     //below all working relational setup

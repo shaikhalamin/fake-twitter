@@ -13,7 +13,7 @@ class StoreFollowRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class StoreFollowRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'followee_id' => 'required|string|exists:users,_id',
         ];
     }
 }

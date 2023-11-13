@@ -29,7 +29,7 @@ class AuthController extends AbstractApiController
         $payload = $request->validated();
 
         $user = $this->userService->findByEmail($payload['email']);
-
+     
         if (!$user || !Hash::check($payload['password'], $user->password)) {
             $errorResponse = [
                 'status' => false,
@@ -39,14 +39,15 @@ class AuthController extends AbstractApiController
             return $this->apiErrorResponse($errorResponse, RESPONSE::HTTP_UNAUTHORIZED);
         }
 
-        $accessTokenTime = Carbon::now()->addDays(5);
-        $refreshTokenTime = Carbon::now()->addDays(30);
+        $accessTokenTime = Carbon::now()->addMinute(30);
+        $refreshTokenTime = Carbon::now()->addDays(5);
 
         $loginResult = [
             'status' => true,
-            'access_token' => $user->createToken($user->email, ['expiresAt'=> $accessTokenTime])->plainTextToken,
-            'refresh_token' => $user->createToken($user->email, ['expiresAt'=> $refreshTokenTime])->plainTextToken,
+            'access_token' => $user->createToken($user->email, ['expiresAt' => $accessTokenTime])->plainTextToken,
+            'refresh_token' => $user->createToken($user->email, ['expiresAt' => $refreshTokenTime])->plainTextToken,
             'access_token_expires_at' => $accessTokenTime->getTimestamp(),
+            'refresh_token_expires_at' => $refreshTokenTime->getTimestamp(),
             'user' => $user,
         ];
 
@@ -70,5 +71,20 @@ class AuthController extends AbstractApiController
 
         return $this->apiSuccessResponse($response, RESPONSE::HTTP_NO_CONTENT);
     }
-    
+
+     /**
+     * Remove the specified resource from storage.
+     *
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function user(Request $request)
+    {
+        $response = [
+            'success' => true,
+            'data' => $request->user(),
+        ];
+
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
+    }
 }

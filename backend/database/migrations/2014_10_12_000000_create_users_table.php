@@ -15,8 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::connection('mongodb')->create('users', function (Blueprint $table) {
             $table->string('name');
-            $table->string('username')->unique('users_username_index');
-            $table->string('email')->unique('users_email_index');
+            $table->string('username')->unique();
+            $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

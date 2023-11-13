@@ -15,7 +15,7 @@ class FollowController extends Controller
      */
     public function index()
     {
-        //
+        return Follow::paginate(10);
     }
 
     /**
@@ -36,7 +36,10 @@ class FollowController extends Controller
      */
     public function store(StoreFollowRequest $request)
     {
-        //
+        $followerId = $request->user()->_id;
+        $followeeId = $request->get('followee_id');
+
+        return Follow::create(['follower_id'=> $followerId, 'following_id'=> $followeeId]);
     }
 
     /**

@@ -9,14 +9,18 @@ class Follow extends Model
     protected $connection = 'mongodb';
     protected $collection = 'follows';
 
+    protected $fillable = [
+        'follower_id',
+        'following_id',
+    ];
 
     public function follower()
     {
-        return $this->belongsTo(User::class, 'follower');
+        return $this->belongsTo(User::class);
     }
 
-    public function followee()
+    public function following()
     {
-        return $this->belongsTo(User::class, 'followee');
+        return $this->belongsTo(User::class);
     }
 }

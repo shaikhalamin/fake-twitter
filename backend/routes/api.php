@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TweetController;
@@ -23,8 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/auth/login',[AuthController::class,'login']);
-Route::post('/auth/logout',[AuthController::class,'logout']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/auth/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
 Route::apiResource('users', UserController::class);
-Route::apiResource('tweets', TweetController::class);
-Route::apiResource('likes', LikeController::class);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('tweets', TweetController::class);
+    Route::apiResource('likes', LikeController::class);
+    Route::apiResource('follows', FollowController::class);
+});

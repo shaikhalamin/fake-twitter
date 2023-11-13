@@ -14,12 +14,8 @@ class CreateFollowsTable extends Migration
     public function up()
     {
         Schema::connection('mongodb')->create('follows', function (Blueprint $table) {
-            // $table->objectId('follower')->references('users');
-            // $table->objectId('followee')->references('users');
-            $table->objectId('follower')->index('follower');
-            $table->objectId('followee')->index('followee');
-            $table->reference('follower', 'User');
-            $table->reference('followee', 'User');
+            $table->objectId('follower_id'); 
+            $table->objectId('following_id');
             $table->timestamps();
         });
     }
