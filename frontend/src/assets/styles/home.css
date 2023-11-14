@@ -1,0 +1,26 @@
+.home-banner {
+  width: 320px !important;
+  height: 280 !important;
+}
+
+.font-size-64 {
+  font-size: 64px;
+}
+
+.signup-btn {
+  width: 100%;
+  background-color: rgb(29, 155, 240) !important;
+  border-radius: 20px !important;
+}
+
+.signin-btn {
+  width: 100%;
+  background-color: #fff !important;
+  border-radius: 20px !important;
+  color: rgb(29, 155, 240) !important;
+  font-weight: 500 !important;
+}
+
+.signin-btn:hover {
+  background-color: #e8f6f7 !important;
+}

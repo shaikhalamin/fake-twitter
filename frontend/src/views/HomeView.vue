@@ -1,15 +1,25 @@
 <template>
-  <div class="container">
-    <h1 class="mt-5 mb-5 text-center">Home Page</h1>
-  </div>
+  <b-container fluid="sm">
+    <b-row>
+      <b-col sm="6">
+        <LogoBanner />
+      </b-col>
+      <b-col sm="6">
+        <SignUp />
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-// @ is an alias to /src
+import LogoBanner from '@/components/auth/LogoBanner.vue'
+import SignUp from '@/components/auth/SignUp.vue'
 
 export default {
   name: 'HomeView',
   components: {
+    LogoBanner,
+    SignUp
   }
 }
 </script>
