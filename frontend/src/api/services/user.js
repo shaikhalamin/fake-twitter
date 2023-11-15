@@ -1,4 +1,5 @@
 import { axiosPrivate } from '../lib/axios-private'
+import { axiosPublic } from '../lib/axios-public'
 
 export const getUsers = async () => {
   return axiosPrivate.get('/users', {
@@ -9,7 +10,7 @@ export const getUsers = async () => {
 }
 
 export const createUser = async (userPayload) => {
-  return axiosPrivate.post('/users', userPayload, {
+  return axiosPublic.post('/users', userPayload, {
     headers: {
       'Content-Type': 'application/json'
     }

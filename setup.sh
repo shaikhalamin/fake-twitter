@@ -21,8 +21,8 @@ echo "Backend config clearing ..."
 docker exec -it backend-container php artisan config:clear
 echo "Backend cache clearing ..."
 docker exec -it backend-container php artisan cache:clear
-echo "Backend config cache ..."
-docker exec -it backend-container php artisan config:cache
+# echo "Backend config cache ..."
+# docker exec -it backend-container php artisan config:cache
 echo "Migrating backend schema...."
 docker exec -it backend-container php artisan migrate:fresh
 echo "Running lint on frontend container"

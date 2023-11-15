@@ -24,3 +24,15 @@
 .signin-btn:hover {
   background-color: #e8f6f7 !important;
 }
+
+.auth-top-logo {
+  width: 28px !important;
+  height: 26px !important;
+}
+
+.sidebar-menu {
+  font-size: 20px !important;
+  margin-left: 10px !important;
+  font-weight: 500;
+  color: black;
+}

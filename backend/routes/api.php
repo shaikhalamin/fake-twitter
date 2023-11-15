@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/auth/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
+Route::get('profiles/findby-username/{username}', [ProfileController::class, 'findByUserName']);
 Route::apiResource('users', UserController::class);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('tweets', TweetController::class);

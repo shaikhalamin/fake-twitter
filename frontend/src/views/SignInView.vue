@@ -5,7 +5,7 @@
         <LogoBanner />
       </b-col>
       <b-col sm="6">
-        <SignUp />
+        <SignIn />
       </b-col>
     </b-row>
   </b-container>
@@ -14,13 +14,13 @@
 <script>
 import { getLocalSession } from '@/api/local-storage'
 import LogoBanner from '@/components/auth/LogoBanner.vue'
-import SignUp from '@/components/auth/SignUp.vue'
+import SignIn from '@/components/auth/SignIn.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'SignInView',
   components: {
     LogoBanner,
-    SignUp
+    SignIn
   },
   created () {
     const session = this.getSession()

@@ -3,29 +3,28 @@
 namespace App\Services\User;
 
 use App\Models\User;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function list(): Paginator
+    public function list()
     {
         return User::orderBy('updated_at', 'desc')->paginate(20);
     }
 
-    public function create(array $data): User
+    public function create(array $data)
     {
         return User::create([...$data, 'password' => Hash::make($data['password'])]);
     }
 
-    public function show(int $id): User
+    public function show(string $id, array $relations = [])
     {
-        $category = User::find($id);
+        $category = User::with($relations)->find($id);
 
         return $category;
     }
 
-    public function update(array $data, int $id): User
+    public function update(array $data, string $id)
     {
         $user = $this->show($id);
         $user->update($data);
@@ -33,13 +32,18 @@ class UserService
         return $user->refresh();
     }
 
-    public function delete(int $id): bool
+    public function delete(string $id): bool
     {
         return $this->show($id)->delete();
     }
 
-    public function findByEmail(string $email): User | null
+    public function findByEmail(string $email)
     {
         return User::where('email', $email)->first();
+    }
+
+    public function findByUserName(string $username, array $relations = [])
+    {
+        return User::with($relations)->where('username', $username)->first();
     }
 }

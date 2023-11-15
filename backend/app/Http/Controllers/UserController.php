@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
-use App\Models\Follow;
 use App\Models\User;
+use App\Services\User\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response as RESPONSE;
 
-class UserController extends Controller
+class UserController extends AbstractApiController
 {
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->middleware('auth:sanctum')->only(['update', 'findByUserName']);
+        $this->userService = $userService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +24,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::paginate(10);
+        $response = [
+            'success' => true,
+            'data' => $this->userService->list()
+        ];
+
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 
     /**
@@ -28,11 +40,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $payload = [
-            ...$request->validated(),
-            'password' => Hash::make($request->get('password'))
+        $response = [
+            'success' => true,
+            'data' => $this->userService->create($request->validated()),
         ];
-        return User::create($payload);
+
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_CREATED);
     }
 
     /**
@@ -43,18 +56,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return $user->load(['followers.following','following.follower']);
-    }
+        $response = [
+            'success' => true,
+            'data' => $this->userService->show($user->_id, ['tweets', 'followers.following', 'following.follower', 'likes']),
+        ];
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 
     /**

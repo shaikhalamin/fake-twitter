@@ -22,7 +22,8 @@
                     aria-describedby="input-name-feedback"
                   ></b-form-input>
                   <b-form-invalid-feedback id="input-name-feedback"
-                    >Name is required and must be at least 3 characters</b-form-invalid-feedback
+                    >Name is required and must be at least 3
+                    characters</b-form-invalid-feedback
                   >
                 </b-col>
               </b-row>
@@ -38,7 +39,8 @@
                     aria-describedby="input-username-feedback"
                   ></b-form-input>
                   <b-form-invalid-feedback id="input-username-feedback"
-                    >Username is required and must be at least 3 characters</b-form-invalid-feedback
+                    >Username is required and must be at least 3
+                    characters</b-form-invalid-feedback
                   >
                 </b-col>
               </b-row>
@@ -71,7 +73,8 @@
                     aria-describedby="input-password-feedback"
                   ></b-form-input>
                   <b-form-invalid-feedback id="input-password-feedback"
-                    >Password is required must be at least 6 characters</b-form-invalid-feedback
+                    >Password is required must be at least 6
+                    characters</b-form-invalid-feedback
                   >
                 </b-col>
               </b-row>
@@ -99,6 +102,7 @@
                       <b-button
                         type="button"
                         variant="light"
+                        @click="redirectToSignIn()"
                         class="btn btn-block signin-btn mt-2 border"
                       >
                         <span>Sign in </span>
@@ -116,6 +120,7 @@
 </template>
 
 <script>
+import { createUser } from '@/api/services/user'
 import { validationMixin } from 'vuelidate'
 import { required, minLength, email } from 'vuelidate/lib/validators'
 
@@ -153,17 +158,25 @@ export default {
     }
   },
   methods: {
+    redirectToSignIn: function () {
+      this.$router.push('/signin').catch(() => {})
+    },
     validateState (name) {
       const { $dirty, $error } = this.$v.form[name]
       return $dirty ? !$error : null
     },
-    onSubmit () {
+    async onSubmit () {
       this.$v.form.$touch()
       if (this.$v.form.$anyError) {
         return
       }
-
-      alert(JSON.stringify(this.form))
+      try {
+        const result = await createUser(this.form)
+        console.log('User created successfully ', result.data)
+        this.redirectToSignIn()
+      } catch (err) {
+        console.log('user create error ', err)
+      }
     }
   }
 }
