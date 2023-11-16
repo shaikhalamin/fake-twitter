@@ -18,9 +18,9 @@
             <b-button
               type="button"
               :disabled="!tweet.length"
-              variant="light"
+              variant="primary"
               @click="postTweet()"
-              class="btn btn-block signin-btn mt-2 border"
+              class="btn btn-block tweet-btn mt-2 border"
             >
               <span>Post</span>
             </b-button>

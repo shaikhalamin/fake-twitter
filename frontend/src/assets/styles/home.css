@@ -94,3 +94,10 @@
 .like-icon:hover {
   border-color: 1px solid red;
 }
+
+.tweet-btn {
+  width: 100%;
+  border-radius: 20px !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+}

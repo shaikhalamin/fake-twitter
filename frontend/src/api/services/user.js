@@ -49,3 +49,11 @@ export const getUser = async (id) => {
 export const deleteUser = async (id) => {
   return axiosPrivate.delete(`/users/${id}`)
 }
+
+export const searchUsers = async (query) => {
+  return axiosPrivate.get(`/users/search?q=${query}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}

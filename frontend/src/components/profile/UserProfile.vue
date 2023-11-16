@@ -200,7 +200,6 @@ export default {
   },
   created () {
     this.getProfile()
-    console.log('token user', this.tokenUser)
   },
   computed: {
     userJoined () {

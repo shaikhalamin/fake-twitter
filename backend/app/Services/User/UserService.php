@@ -40,14 +40,6 @@ class UserService
         return $user;
     }
 
-    // public function update(array $data, string $id)
-    // {
-    //     $user = $this->show($id);
-    //     $user->update($data);
-
-    //     return $user->refresh();
-    // }
-
     public function update(array $data, $user)
     {
         $user->update($data);
@@ -82,5 +74,12 @@ class UserService
     {
         $user =  User::where('refresh_token', $token)->first();
         return $user;
+    }
+
+    public function searchUser($searchTerm, $userId)
+    {
+        return User::whereNotIn('_id', [$userId])->where('email', 'like', '%' . $searchTerm . '%')
+            ->orWhere('username', 'like', '%' . $searchTerm . '%')
+            ->paginate(50);
     }
 }

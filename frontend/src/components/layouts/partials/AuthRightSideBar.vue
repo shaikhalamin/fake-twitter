@@ -11,7 +11,11 @@
                 ></span>
               </b-input-group-text>
             </template>
-            <b-form-input class=""></b-form-input>
+            <b-form-input
+              v-model="searchTerm"
+              @input="handleSearch"
+              placeholder="Search by username or email ..."
+            ></b-form-input>
           </b-input-group>
         </b-col>
       </b-row>
@@ -53,7 +57,7 @@
                       @click="follow(user._id)"
                       class="btn btn-block following-btn border"
                     >
-                      <span class="">Follow</span>
+                      <span class="">{{ followUnfollowText(user._id) }}</span>
                     </b-button>
                   </b-col>
                 </b-row>
@@ -67,8 +71,10 @@
 </template>
 
 <script>
+import _debounce from 'lodash/debounce'
 import { followUser } from '@/api/services/follow'
-import { getUsers } from '@/api/services/user'
+import { getUsers, searchUsers } from '@/api/services/user'
+import { isFollowed } from '@/api/helpers'
 
 export default {
   name: 'AuthRightSideBar',
@@ -76,7 +82,8 @@ export default {
   components: {},
   data () {
     return {
-      users: null
+      users: null,
+      searchTerm: ''
     }
   },
   created () {
@@ -98,6 +105,23 @@ export default {
     viewProfile: function (username) {
       this.$router.push(`/profile/${username}`).catch(() => {})
       this.$router.go(0)
+    },
+    debouncedSearch: _debounce(async function () {
+      console.log('search term', this.searchTerm)
+      if (this.searchTerm.length > 0) {
+        const searchList = await searchUsers(this.searchTerm)
+        this.users = searchList.data.data
+      } else {
+        this.getUsersList()
+      }
+    }, 400),
+    handleSearch () {
+      this.debouncedSearch()
+    },
+    followUnfollowText (searchedUserId) {
+      return isFollowed(this.tokenUser.following, searchedUserId)
+        ? 'Unfollow'
+        : 'Follow'
     }
   }
 }

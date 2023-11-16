@@ -17,7 +17,7 @@ class UserController extends AbstractApiController
 
     public function __construct(UserService $userService, FileService $fileService)
     {
-        $this->middleware('auth:sanctum')->only(['index', 'update', 'findByUserName']);
+        $this->middleware('auth:sanctum')->only(['index', 'update', 'findByUserName', 'searchUser']);
         $this->userService = $userService;
         $this->fileService = $fileService;
     }
@@ -105,5 +105,17 @@ class UserController extends AbstractApiController
     public function destroy($id)
     {
         //
+    }
+
+    public function searchUser(Request $request)
+    {
+        $searchTerm = $request->input('q');
+        $userId = auth()->user()->_id;
+        $response = [
+            'success' => true,
+            'data' => $this->userService->searchUser($searchTerm, $userId),
+        ];
+
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_CREATED);
     }
 }
