@@ -17,6 +17,8 @@ echo "Please wait for a while to build with no cache ...."
 docker-compose build --no-cache
 echo "Run container with detach mode ...."
 docker-compose up -d
+echo "Generating new backend app key"
+docker exec -it backend-container php artisan key:generate
 echo "Backend config clearing ..."
 docker exec -it backend-container php artisan config:clear
 echo "Backend cache clearing ..."

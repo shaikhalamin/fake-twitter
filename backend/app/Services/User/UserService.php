@@ -26,7 +26,7 @@ class UserService
         $payload = [
             ...$data,
             'password' => Hash::make($data['password']),
-            'avatar' => 'http://localhost:9000/assests/demo.jpg',
+            'avatar' => 'https://res.cloudinary.com/deundpsr2/image/upload/v1700135801/general/user/ameotogmx5u2fjhnv73r.jpg',
             'location' => 'Dhaka, Bangladesh',
             'bio' => 'A human being'
         ];
@@ -40,9 +40,16 @@ class UserService
         return $user;
     }
 
-    public function update(array $data, string $id)
+    // public function update(array $data, string $id)
+    // {
+    //     $user = $this->show($id);
+    //     $user->update($data);
+
+    //     return $user->refresh();
+    // }
+
+    public function update(array $data, $user)
     {
-        $user = $this->show($id);
         $user->update($data);
 
         return $user->refresh();

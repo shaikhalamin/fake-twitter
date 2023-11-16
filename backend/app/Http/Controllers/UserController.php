@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Services\File\FileService;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as RESPONSE;
@@ -11,11 +13,13 @@ use Symfony\Component\HttpFoundation\Response as RESPONSE;
 class UserController extends AbstractApiController
 {
     private $userService;
+    private $fileService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, FileService $fileService)
     {
         $this->middleware('auth:sanctum')->only(['index', 'update', 'findByUserName']);
         $this->userService = $userService;
+        $this->fileService = $fileService;
     }
     /**
      * Display a listing of the resource.
@@ -36,7 +40,7 @@ class UserController extends AbstractApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreUserRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreUserRequest $request)
@@ -68,13 +72,28 @@ class UserController extends AbstractApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     *  @param  \App\Http\Requests\UpdateUserRequest  $request
+     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $fileName = null;
+        if ($request->hasFile('avatar')) {
+            $fileName = $this->fileService->upload($user, $request->file('avatar'));
+        }
+        $payload = $request->validated();
+        if ($fileName) {
+            $payload['avatar'] = $fileName;
+        }
+        $updatedUser = $this->userService->update($payload, $user);
+
+        $response = [
+            'success' => true,
+            'data' => $updatedUser
+        ];
+
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 
     /**

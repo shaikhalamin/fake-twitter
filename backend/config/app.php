@@ -53,6 +53,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'host_port' => env('HOST_PORT', 9000),
 
     'asset_url' => env('ASSET_URL', null),
 
