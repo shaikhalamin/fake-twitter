@@ -1,24 +1,10 @@
-# test_fe_vue
+## Frontend for twitter backend
+Frontend Manual Setup: Node.js is required
+```bash
 
-## Project setup
-```
-npm install
-```
+1. cd into frontend directory and just cp .env.example .env and change the .env value accordingly
+2. npm install --legacy-peer-deps
+3. npm run lint
+4. npm run serve
 
-### Compiles and hot-reloads for development
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
