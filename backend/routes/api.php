@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/auth/user', [AuthController::class, 'user']);
     Route::apiResource('tweets', TweetController::class);
     Route::apiResource('likes', LikeController::class);
+    Route::get('/follows/list/following-follower', [FollowController::class, 'followingFollowerList']);
     Route::apiResource('follows', FollowController::class);
     Route::get('profiles/{username}', [ProfileController::class, 'findByUserName']);
 });

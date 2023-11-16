@@ -16,10 +16,10 @@ class AuthService
 
     public function createUserToken($user)
     {
-        $accessTokenTime = Carbon::now()->addMinute(3);
+        $accessTokenTime = Carbon::now()->addMinute(5);
         $refreshTokenTime = Carbon::now()->addDays(7);
-        $accessToken = $user->createToken($user->email, ['expiresAt' => $accessTokenTime])->plainTextToken;
-        $refreshToken = $user->createToken($user->email, ['expiresAt' => $refreshTokenTime])->plainTextToken;
+        $accessToken = $user->createToken($user->email, ['expires_at' => $accessTokenTime])->plainTextToken;
+        $refreshToken = $user->createToken($user->email, ['expires_at' => $refreshTokenTime])->plainTextToken;
 
         $this->userService->updateRefreshToken($user->_id, $refreshToken);
 

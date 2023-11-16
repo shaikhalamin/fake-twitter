@@ -13,22 +13,16 @@
       <b-col sm="10">
         <b-row>
           <b-col sm="8">
-            <div class="ft-16 mt-2 profile-link" @click="viewProfile(following?.follower?.username)">
+            <div
+              class="ft-16 mt-2 profile-link"
+              @click="viewProfile(following?.follower?.username)"
+            >
               <span class="fw-500">{{ following?.follower?.name }}</span> @{{
                 following?.follower?.username
               }}
             </div>
           </b-col>
-          <b-col sm="4">
-            <b-button
-              type="button"
-              variant="light"
-              @click="follow(following?.follower?._id)"
-              class="btn btn-block following-btn border"
-            >
-              <span class="">Follow</span>
-            </b-button>
-          </b-col>
+          <b-col sm="4"></b-col>
         </b-row>
         <b-row>
           <b-col sm="12">

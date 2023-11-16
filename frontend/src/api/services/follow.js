@@ -7,3 +7,11 @@ export const followUser = async (followPayload) => {
     }
   })
 }
+
+export const followingFollowerList = async () => {
+  return axiosPrivate.get('/follows/list/following-follower', {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}

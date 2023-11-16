@@ -45,8 +45,10 @@ export default {
       const payload = {
         content: this.tweet
       }
-      const create = await createTweet(payload)
-      console.log('create tweet', create)
+      createTweet(payload).then(() => {
+        this.tweet = ''
+        this.$emit('onTweetCreated', 'updating tweet list ....')
+      })
     }
   }
 }

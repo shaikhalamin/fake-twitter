@@ -37,7 +37,7 @@ class LikeController extends AbstractApiController
     {
         $response = [
             'success' => true,
-            'data' => $this->likeService->like([...$request->validated(),'user_id' => auth()->user()->_id])
+            'data' => $this->likeService->likeUnlike([...$request->validated(),'user_id' => auth()->user()->_id])
         ];
 
         return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);

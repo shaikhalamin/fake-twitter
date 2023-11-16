@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreFollowRequest;
 use App\Http\Requests\UpdateFollowRequest;
 use App\Models\Follow;
+use App\Services\Follow\FollowService;
+use Symfony\Component\HttpFoundation\Response as RESPONSE;
 
-class FollowController extends Controller
+class FollowController extends AbstractApiController
 {
+    private $followService;
+
+    public function __construct(FollowService $followService)
+    {
+        $this->followService = $followService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,16 +28,6 @@ class FollowController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreFollowRequest  $request
@@ -37,53 +36,27 @@ class FollowController extends Controller
     public function store(StoreFollowRequest $request)
     {
         $followerId = $request->user()->_id;
-        $followeeId = $request->get('followee_id');
+        $followeeId = $request->validated()['followee_id'];
 
-        return Follow::create(['follower_id'=> $followerId, 'following_id'=> $followeeId]);
+        $response = [
+            'success' => true,
+            'data' => $this->followService->followUnfollow($followerId, $followeeId)
+        ];
+
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Follow  $follow
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Follow $follow)
+    public function followingFollowerList()
     {
-        //
-    }
+        $followerId = auth()->user()->_id;
+        $response = [
+            'success' => true,
+            'data' => [
+                'following' => $this->followService->getFollowingByFollowerId($followerId),
+                'follower' => $this->followService->getFollowerByFollowerId($followerId)
+            ]
+        ];
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Follow  $follow
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Follow $follow)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateFollowRequest  $request
-     * @param  \App\Models\Follow  $follow
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateFollowRequest $request, Follow $follow)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Follow  $follow
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Follow $follow)
-    {
-        //
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 }

@@ -9,7 +9,6 @@
 <script>
 import AuthLayout from '@/components/layouts/AuthLayout.vue'
 import UserProfileEdit from '@/components/profile/UserProfileEdit.vue'
-// UserProfileEdit.vue
 export default {
   name: 'ProfileEditView',
   components: {

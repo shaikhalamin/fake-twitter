@@ -16,6 +16,7 @@
 
 <script>
 import { getLocalSession } from '@/api/local-storage'
+import { followingFollowerList } from '@/api/services/follow'
 import AuthLeftSideBar from '@/components/layouts/partials/AuthLeftSideBar.vue'
 import AuthRightSideBar from '@/components/layouts/partials/AuthRightSideBar.vue'
 
@@ -36,11 +37,21 @@ export default {
       this.$router.push('/').catch(() => {})
     }
     this.tokenUser = session
+    this.fetchFollowingFollowers()
   },
   methods: {
     getSession () {
       const userSession = getLocalSession()
       return userSession
+    },
+    async fetchFollowingFollowers () {
+      const list = await followingFollowerList()
+      const followingFollowers = list.data.data
+      const updatedTokenUser = Object.assign(
+        this.tokenUser,
+        followingFollowers
+      )
+      this.tokenUser = updatedTokenUser
     }
   },
   errorCaptured (err, vm, info) {

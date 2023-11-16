@@ -3,8 +3,8 @@
     v-if="tokenUser && Object.keys(tokenUser).length > 0"
     class="mt-3 border-left border-right"
   >
-    <TweetPost />
-    <UserTweets :tweets="userTweets.data" />
+    <TweetPost @onTweetCreated="updateTweetList" />
+    <UserTweets @onLiked="updateTweetList" :tweets="userTweets.data" />
   </b-container>
 </template>
 
@@ -31,8 +31,11 @@ export default {
   methods: {
     async fetchTweets () {
       const tweets = await getTweets()
-      console.log('tweets ', tweets.data.data)
       this.userTweets = tweets.data.data
+    },
+    async updateTweetList (message) {
+      console.log(message)
+      await this.fetchTweets()
     }
   }
 }

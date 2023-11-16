@@ -20,18 +20,18 @@ export const createUser = async (userPayload) => {
 export const updateUser = async (id, formData) => {
   return axiosPrivate.post(`/users/${id}`, formData, {
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'multipart/form-data'
     }
   })
 }
 
 export const prepareFormData = (userPayload) => {
-  console.log('userpayload', userPayload)
   const { name, bio, location, avatar } = userPayload
   const formData = new FormData()
-  name && formData.append('name', name)
-  bio && formData.append('bio', bio)
-  location && formData.append('location', location)
+  name.length > 0 && formData.append('name', name)
+  bio.length > 0 && formData.append('bio', bio)
+  location.length > 0 && formData.append('location', location)
   avatar && formData.append('avatar', avatar)
   formData.append('_method', 'PUT')
 

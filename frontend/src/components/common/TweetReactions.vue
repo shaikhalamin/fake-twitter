@@ -45,6 +45,7 @@ export default {
         tweet_id: this.tweet._id
       }
       await likeTweet(likePayload)
+      this.$emit('onLiked', '')
     }
   }
 }

@@ -23,7 +23,7 @@
           </div>
           <div class="ft-16">{{ tweet.content }}</div>
         </div>
-        <TweetReactions :tweet="tweet" />
+        <TweetReactions @onLiked="updateTweetList" :tweet="tweet" />
       </b-col>
     </b-row>
   </div>
@@ -43,6 +43,9 @@ export default {
     }
   },
   methods: {
+    updateTweetList () {
+      this.$emit('onLiked', '')
+    },
     tweetCreated (createdAt) {
       const date = new Date(createdAt).toLocaleString()
       const month = new Date(date.split(',')[0]).toLocaleString('default', {

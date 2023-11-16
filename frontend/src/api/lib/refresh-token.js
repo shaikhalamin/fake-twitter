@@ -1,8 +1,13 @@
 import mem from 'mem'
 import { axiosPublic } from './axios-public'
+import {
+  getLocalSession,
+  removeLocalSession,
+  updateLocalSession
+} from '../local-storage'
 
 const refreshTokenFn = async () => {
-  const userSession = JSON.parse(localStorage.getItem('session'))
+  const userSession = getLocalSession()
 
   try {
     const response = await axiosPublic.post(
@@ -17,15 +22,13 @@ const refreshTokenFn = async () => {
     const newSession = response.data
 
     if (!newSession?.access_token) {
-      localStorage.removeItem('session')
+      removeLocalSession()
     }
 
-    localStorage.setItem('session', JSON.stringify(newSession))
-
-    return newSession
+    return updateLocalSession(newSession)
   } catch (error) {
     console.log('Axios error data fetching ..', error)
-    localStorage.removeItem('session')
+    removeLocalSession()
     window.location.href = 'http://localhost:7890'
   }
 }

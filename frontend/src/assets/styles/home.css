@@ -56,6 +56,10 @@
   font-size: 16px;
 }
 
+.ft-18 {
+  font-size: 18px;
+}
+
 .profile-info {
   font-size: 16px !important;
   margin-left: 10px !important;
@@ -69,6 +73,10 @@
   border-radius: 20px !important;
   color: #fff;
   font-weight: 500 !important;
+}
+.following-btn:hover {
+  background-color: #fff !important;
+  color: #000 !important;
 }
 
 .edit-profile-btn {

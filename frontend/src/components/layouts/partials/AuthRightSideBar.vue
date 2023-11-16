@@ -93,6 +93,7 @@ export default {
       }
       await followUser(payload)
       await this.getUsersList()
+      this.$router.go(0)
     },
     viewProfile: function (username) {
       this.$router.push(`/profile/${username}`).catch(() => {})
