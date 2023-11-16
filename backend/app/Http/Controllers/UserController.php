@@ -14,7 +14,7 @@ class UserController extends AbstractApiController
 
     public function __construct(UserService $userService)
     {
-        $this->middleware('auth:sanctum')->only(['update', 'findByUserName']);
+        $this->middleware('auth:sanctum')->only(['index', 'update', 'findByUserName']);
         $this->userService = $userService;
     }
     /**
@@ -22,11 +22,12 @@ class UserController extends AbstractApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $userId = $request->user()->_id;
         $response = [
             'success' => true,
-            'data' => $this->userService->list()
+            'data' => $this->userService->list($userId)
         ];
 
         return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);

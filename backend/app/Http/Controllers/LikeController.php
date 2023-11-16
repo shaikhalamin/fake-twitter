@@ -5,27 +5,24 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLikeRequest;
 use App\Http\Requests\UpdateLikeRequest;
 use App\Models\Like;
-use App\Models\Tweet;
-use App\Models\User;
+use App\Services\Like\LikeService;
+use Symfony\Component\HttpFoundation\Response as RESPONSE;
 
-class LikeController extends Controller
+class LikeController extends AbstractApiController
 {
+    private $likeService;
+
+    public function __construct(LikeService $likeService)
+    {
+        $this->likeService = $likeService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -38,14 +35,12 @@ class LikeController extends Controller
      */
     public function store(StoreLikeRequest $request)
     {
-        $like = Like::create($request->validated());
-        $user = User::where('_id', $request->get('user_id'))->first();
-        $user->likes()->saveMany([$like]);
+        $response = [
+            'success' => true,
+            'data' => $this->likeService->like([...$request->validated(),'user_id' => auth()->user()->_id])
+        ];
 
-        $tweet = Tweet::where('_id', $request->get('tweet_id'))->first();
-        $tweet->likes()->saveMany([$like]);
-
-        return $like;
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 
     /**

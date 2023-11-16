@@ -13,7 +13,6 @@ class ProfileController extends AbstractApiController
 
     public function __construct(UserService $userService)
     {
-        $this->middleware('auth:sanctum');
         $this->userService = $userService;
     }
 
@@ -26,7 +25,9 @@ class ProfileController extends AbstractApiController
     {
         $response = [
             'success' => true,
-            'data' => $this->userService->findByUserName($username, ['tweets', 'followers.following', 'following.follower', 'likes']),
+            'data' => $this->userService->findByUserName($username, ['followers.following', 'following.follower', 'tweets' => function ($query) {
+                return $query->orderBy('created_at', 'desc');
+            }, 'tweets.user', 'likes']),
         ];
 
         return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);

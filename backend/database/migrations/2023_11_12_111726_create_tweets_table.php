@@ -16,7 +16,6 @@ class CreateTweetsTable extends Migration
         Schema::connection('mongodb')->create('tweets', function (Blueprint $table) {
             $table->text('content');
             $table->objectId('user_id')->index('user_id_index');
-            $table->dateTime('created_at');
             $table->timestamps();
         });
     }

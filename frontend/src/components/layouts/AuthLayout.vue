@@ -42,6 +42,10 @@ export default {
       const userSession = getLocalSession()
       return userSession
     }
+  },
+  errorCaptured (err, vm, info) {
+    this.error = `${err.stack}\n\nfound in ${info} of component`
+    return false
   }
 }
 </script>

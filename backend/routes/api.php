@@ -26,12 +26,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::post('/auth/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
-Route::get('profiles/findby-username/{username}', [ProfileController::class, 'findByUserName']);
+Route::post('/auth/refresh', [AuthController::class, 'refresh']);
 Route::apiResource('users', UserController::class);
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('/auth/user', [AuthController::class, 'user']);
     Route::apiResource('tweets', TweetController::class);
     Route::apiResource('likes', LikeController::class);
     Route::apiResource('follows', FollowController::class);
+    Route::get('profiles/{username}', [ProfileController::class, 'findByUserName']);
 });

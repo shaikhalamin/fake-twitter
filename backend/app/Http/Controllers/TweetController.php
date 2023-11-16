@@ -5,18 +5,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTweetRequest;
 use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Tweet;
-use App\Models\User;
+use App\Services\Tweet\TweetService;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response as RESPONSE;
 
-class TweetController extends Controller
+class TweetController extends AbstractApiController
 {
+
+    private $tweetService;
+
+    public function __construct(TweetService $tweetService)
+    {
+        $this->tweetService = $tweetService;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Tweet::with(['user','likes'])->paginate(20);
+        $userId = $request->user()->_id;
+        $response = [
+            'success' => true,
+            'data' => $this->tweetService->list($userId)
+        ];
+
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 
     /**
@@ -27,11 +42,12 @@ class TweetController extends Controller
      */
     public function store(StoreTweetRequest $request)
     {
-        $tweet =  Tweet::create($request->validated());
-        $user = User::where('_id', $request->get('user_id'))->first();
-        $user->tweets()->saveMany([$tweet]);
+        $response = [
+            'success' => true,
+            'data' => $this->tweetService->create(auth()->user(), $request->validated()),
+        ];
 
-        return $tweet;
+        return $this->apiSuccessResponse($response, RESPONSE::HTTP_OK);
     }
 
     /**

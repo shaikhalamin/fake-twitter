@@ -1,21 +1,39 @@
 <template>
-  <div>
-    <b-container v-if="tokenUser && Object.keys(tokenUser).length > 0">
-      <h1>Time line page</h1>
-      <h6>{{ tokenUser.user.email }}</h6>
-    </b-container>
-  </div>
+  <b-container
+    v-if="tokenUser && Object.keys(tokenUser).length > 0"
+    class="mt-3 border-left border-right"
+  >
+    <TweetPost />
+    <UserTweets :tweets="userTweets.data" />
+  </b-container>
 </template>
 
 <script>
+import { getTweets } from '@/api/services/tweet'
+import TweetPost from '@/components/home/TweetPost.vue'
+import UserTweets from '@/components/common/UserTweets.vue'
+
 export default {
   name: 'TimeLine',
   props: ['tokenUser'],
+  components: {
+    TweetPost,
+    UserTweets
+  },
   data () {
     return {
-      show: true
+      userTweets: null
     }
   },
-  created () {}
+  created () {
+    this.fetchTweets()
+  },
+  methods: {
+    async fetchTweets () {
+      const tweets = await getTweets()
+      console.log('tweets ', tweets.data.data)
+      this.userTweets = tweets.data.data
+    }
+  }
 }
 </script>

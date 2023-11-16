@@ -3,25 +3,41 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use App\Services\Follow\FollowService;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function list()
+    private $followService;
+
+    public function __construct(FollowService $followService)
     {
-        return User::orderBy('updated_at', 'desc')->paginate(20);
+        $this->followService = $followService;
+    }
+
+    public function list($userId)
+    {
+        $followingIds = $this->followService->getFollowingByFollowerId($userId);
+        return User::whereNotIn('_id', [...$followingIds, $userId])->orderBy('updated_at', 'desc')->paginate(50);
     }
 
     public function create(array $data)
     {
-        return User::create([...$data, 'password' => Hash::make($data['password'])]);
+        $payload = [
+            ...$data,
+            'password' => Hash::make($data['password']),
+            'avatar' => 'http://localhost:9000/assests/demo.jpg',
+            'location' => 'Dhaka, Bangladesh',
+            'bio' => 'A human being'
+        ];
+        return User::create($payload);
     }
 
     public function show(string $id, array $relations = [])
     {
-        $category = User::with($relations)->find($id);
+        $user = User::with($relations)->find($id);
 
-        return $category;
+        return $user;
     }
 
     public function update(array $data, string $id)
@@ -44,6 +60,20 @@ class UserService
 
     public function findByUserName(string $username, array $relations = [])
     {
+        //'tweets', 'followers.following', 'following.follower', 'likes'
         return User::with($relations)->where('username', $username)->first();
+    }
+
+    public function updateRefreshToken($id, $token)
+    {
+        $user = $this->show($id);
+        $user->update(['refresh_token' => $token]);
+        return $user;
+    }
+
+    public function findByRefreshToken($token)
+    {
+        $user =  User::where('refresh_token', $token)->first();
+        return $user;
     }
 }

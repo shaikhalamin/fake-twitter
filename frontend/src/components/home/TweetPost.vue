@@ -1,0 +1,53 @@
+<template>
+  <b-container class="mb-5 border-bottom">
+    <b-row>
+      <b-col>
+        <b-form-textarea
+          id="tweets"
+          v-model="tweet"
+          placeholder="Whats happening..."
+          rows="3"
+          max-rows="6"
+        ></b-form-textarea>
+      </b-col>
+    </b-row>
+    <b-row class="py-3">
+      <b-col sm="12">
+        <b-row class="">
+          <b-col sm="6" offset-sm="3">
+            <b-button
+              type="button"
+              :disabled="!tweet.length"
+              variant="light"
+              @click="postTweet()"
+              class="btn btn-block signin-btn mt-2 border"
+            >
+              <span>Post</span>
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
+  </b-container>
+</template>
+
+<script>
+import { createTweet } from '@/api/services/tweet'
+export default {
+  name: 'TweetPost',
+  data () {
+    return {
+      tweet: ''
+    }
+  },
+  methods: {
+    async postTweet () {
+      const payload = {
+        content: this.tweet
+      }
+      const create = await createTweet(payload)
+      console.log('create tweet', create)
+    }
+  }
+}
+</script>

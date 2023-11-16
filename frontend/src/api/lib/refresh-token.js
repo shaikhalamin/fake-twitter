@@ -10,28 +10,27 @@ const refreshTokenFn = async () => {
       {},
       {
         headers: {
-          Authorization: `Bearer ${userSession?.refresh_token}`
+          RefreshToken: `${userSession?.refresh_token}`
         }
       }
     )
-
     const newSession = response.data
 
     if (!newSession?.access_token) {
       localStorage.removeItem('session')
-      localStorage.removeItem('user')
     }
 
     localStorage.setItem('session', JSON.stringify(newSession))
 
     return newSession
   } catch (error) {
-    localStorage.removeItem('session')
-    localStorage.removeItem('user')
+    console.log('Axios error data fetching ..', error)
+    console.log('userSession', userSession)
+    return userSession // refreshTokenFn()
   }
 }
 
-const maxAge = 10000
+const maxAge = 1000000
 
 export const memoizedRefreshToken = mem(refreshTokenFn, {
   maxAge

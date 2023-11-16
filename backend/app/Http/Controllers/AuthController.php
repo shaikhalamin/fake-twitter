@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
+use App\Services\Auth\AuthService;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response as RESPONSE;
 
 class AuthController extends AbstractApiController
 {
     private $userService;
+    private $authService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, AuthService $authService)
     {
         $this->userService = $userService;
+        $this->authService = $authService;
     }
 
     /**
@@ -29,7 +31,7 @@ class AuthController extends AbstractApiController
         $payload = $request->validated();
 
         $user = $this->userService->findByEmail($payload['email']);
-     
+
         if (!$user || !Hash::check($payload['password'], $user->password)) {
             $errorResponse = [
                 'status' => false,
@@ -39,17 +41,7 @@ class AuthController extends AbstractApiController
             return $this->apiErrorResponse($errorResponse, RESPONSE::HTTP_UNAUTHORIZED);
         }
 
-        $accessTokenTime = Carbon::now()->addMinute(30);
-        $refreshTokenTime = Carbon::now()->addDays(5);
-
-        $loginResult = [
-            'status' => true,
-            'access_token' => $user->createToken($user->email, ['expiresAt' => $accessTokenTime])->plainTextToken,
-            'refresh_token' => $user->createToken($user->email, ['expiresAt' => $refreshTokenTime])->plainTextToken,
-            'access_token_expires_at' => $accessTokenTime->getTimestamp(),
-            'refresh_token_expires_at' => $refreshTokenTime->getTimestamp(),
-            'user' => $user,
-        ];
+        $loginResult = $this->authService->createUserToken($user);
 
         return $this->apiSuccessResponse($loginResult, RESPONSE::HTTP_OK);
     }
@@ -72,7 +64,33 @@ class AuthController extends AbstractApiController
         return $this->apiSuccessResponse($response, RESPONSE::HTTP_NO_CONTENT);
     }
 
-     /**
+    /**
+     * Refresh the access & refresh token with old refresh token
+     *
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function refresh(Request $request)
+    {
+        $refreshToken =  $request->header('RefreshToken');
+
+        $userToken = $this->authService->reGenerateUserToken($refreshToken);
+
+        if (is_null($userToken)) {
+            $errorResponse = [
+                'status' => false,
+                'message' => 'Token not found',
+            ];
+
+            return $this->apiErrorResponse($errorResponse, RESPONSE::HTTP_UNAUTHORIZED);
+        }
+
+        return $userToken;
+    }
+
+
+
+    /**
      * Remove the specified resource from storage.
      *
      *

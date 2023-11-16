@@ -25,8 +25,6 @@ class StoreTweetRequest extends FormRequest
     {
         return [
             'content'=> 'required|string',
-            'user_id' => 'required|string|exists:users,_id',
-            'created_at'=> 'required|date_format:Y/m/d H:i',
         ];
     }
 }
