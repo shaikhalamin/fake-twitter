@@ -3,7 +3,7 @@
     <b-col>
       <b-nav vertical>
         <b-nav-item active>
-          <div class="auth-top-logo">
+          <div class="auth-top-logo" @click="redirectToHome()">
             <LogoSmall />
           </div>
         </b-nav-item>
@@ -81,6 +81,7 @@ export default {
     },
     redirectToHome: function () {
       this.$router.push('/timeline').catch(() => {})
+      this.$router.go(0)
     },
     logOut () {
       authLogOut()

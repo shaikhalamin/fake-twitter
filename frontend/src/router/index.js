@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import SignInView from '../views/SignInView.vue'
 import TimeLineView from '../views/TimeLineView.vue'
 import ProfileView from '../views/ProfileView.vue'
+import ProfileEditView from '../views/ProfileEditView.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/profile/:username',
     name: 'profile_home',
     component: ProfileView
+  },
+  {
+    path: '/profile/edit/:username',
+    name: 'profile_edit',
+    component: ProfileEditView
   }
 ]
 

@@ -25,8 +25,8 @@ const refreshTokenFn = async () => {
     return newSession
   } catch (error) {
     console.log('Axios error data fetching ..', error)
-    console.log('userSession', userSession)
-    return userSession // refreshTokenFn()
+    localStorage.removeItem('session')
+    window.location.href = 'http://localhost:7890'
   }
 }
 
