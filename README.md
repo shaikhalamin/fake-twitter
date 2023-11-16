@@ -23,9 +23,10 @@ Step 3: sudo chmod +x setup.sh [Not needed if you can run docker and docker-comp
 Step 4: ./setup.sh
 
 ```
-# please be patient it will take a while to setup docker env and project 
+## N:B: please be patient it will take a while to setup docker env and project 
 
-Step 5: After all the setup done you can browse http://localhost:7890 to see the result
+After all the setup done you can browse http://localhost:7890 to see the result
+Laravel backend will be running on http://localhost:9000
 
 
 ## N:B:  If docker is not setup, then run the two backend and frontend manually by visiting the backend and frontend folder 
