@@ -13,12 +13,6 @@
           ></span>
           <span class="sidebar-menu"> Home</span>
         </b-nav-item>
-        <b-nav-item class="">
-          <span>
-            <b-icon icon="search" scale="1.2" variant="dark"></b-icon
-          ></span>
-          <span class="sidebar-menu"> Explore</span>
-        </b-nav-item>
         <b-nav-item class="" @click="redirectToProfile()">
           <span>
             <b-icon icon="person" scale="1.2" variant="dark"></b-icon
