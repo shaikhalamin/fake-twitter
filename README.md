@@ -1,8 +1,9 @@
-# fake-twitter
-# Twitter clone build with Laravel,Vue.js 2, MongoDB and docker-compose
-    ```bash
-        #Basic Features
 
+## Twitter clone build with Laravel,Vue.js 2, MongoDB and Docker-compose
+
+## Basic Features
+    ```bash
+        
         1. User can sign up and sign in
         2. User can update profile info and update avatar icon
         3. User can post tweet and like tweet
@@ -21,17 +22,16 @@ Step 3: sudo chmod +x setup.sh [Not needed if you can run docker and docker-comp
 
 Step 4: ./setup.sh
 
-#please be patient it will take a while to setup docker env and project 
+```
+# please be patient it will take a while to setup docker env and project 
 
 Step 5: After all the setup done you can browse http://localhost:7890 to see the result
 
 
-```
-```bash
-N:B:  If docker is not setup, then run the two backend and frontend manually by visiting the backend and frontend folder 
+## N:B:  If docker is not setup, then run the two backend and frontend manually by visiting the backend and frontend folder 
      
-    Backend Manual Setup: (php8.1 and php-mongodb driver is must required)
-
+## Backend Manual Setup: (php8.1 and php-mongodb driver is must required)
+```bash
     1. For Backend manual setup cd into backend directory and just cp .env.example .env and change the .env value accordingly
     2. composer dump-autoload
     3. composer install
@@ -61,5 +61,5 @@ To Open the frontend link please click the link http://localhost:7890 to see the
 
 ## Project feature display
 
-<img src="https://raw.githubusercontent.com/shaikhalamin/fake-twitter/master/home_page.png" width="30%"></img> <img src="https://raw.githubusercontent.com/shaikhalamin/fake-twitter/master/profile_page.png" width="30%"></img> <img src="https://raw.githubusercontent.com/shaikhalamin/fake-twitter/master/profile_page.pngtime_line.png" width="30%"></img>
+<img src="https://raw.githubusercontent.com/shaikhalamin/fake-twitter/master/home_page.png" width="30%"></img> <img src="https://raw.githubusercontent.com/shaikhalamin/fake-twitter/master/profile_page.png" width="30%"></img> <img src="https://raw.githubusercontent.com/shaikhalamin/fake-twitter/master/time_line.png" width="30%"></img>
 
