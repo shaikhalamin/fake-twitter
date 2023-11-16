@@ -7,12 +7,13 @@
           fluid
           :src="follower?.following?.avatar"
           :alt="follower?.following?.name"
+          @click="viewProfile(follower?.following?.username)"
         ></b-img>
       </b-col>
       <b-col sm="10">
         <b-row>
           <b-col sm="8">
-            <div class="ft-16 mt-2">
+            <div class="ft-16 mt-2 profile-link" @click="viewProfile(follower?.following?.username)">
               <span class="fw-500">{{ follower?.following?.name }}</span> @{{
                 follower?.following?.username
               }}
@@ -51,6 +52,10 @@ export default {
   methods: {
     followUnfollow (followeeId) {
       console.log(followeeId)
+    },
+    viewProfile: function (username) {
+      this.$router.push(`/profile/${username}`).catch(() => {})
+      this.$router.go(0)
     }
   },
   computed: {}
