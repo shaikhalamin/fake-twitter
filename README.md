@@ -59,6 +59,8 @@ Laravel backend will be running on http://localhost:9000
 To Open the frontend link please click the link http://localhost:7890 to see the result
 
 ```
+## Project Screencast link added below for see the details
+## https://www.loom.com/share/07765cabae4248cda4f2e2d71b3a5e7a?t=678&sid=7b3355ae-7a47-4dce-939a-44767b182177
 
 ## Project feature display
 
