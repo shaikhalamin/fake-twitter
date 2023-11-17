@@ -37,6 +37,10 @@
   color: black;
 }
 
+.ml-10 {
+  margin-left: 10px !important;
+}
+
 .arrow-cursor {
   cursor: pointer;
 }
