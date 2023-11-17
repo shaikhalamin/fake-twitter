@@ -40,17 +40,17 @@
               <b-col sm="10" class="mb-2">
                 <b-row>
                   <b-col
-                    sm="6"
+                    sm="7"
                     class="profile-link"
                     @click="viewProfile(user.username)"
                   >
-                    <div class="ft-16">
-                      <span class="fw-500">{{ user.name }}</span> @{{
+                    <div class="ft-15">
+                      <span class="fw-400">{{ user.name }}</span> @{{
                         user.username
                       }}
                     </div>
                   </b-col>
-                  <b-col sm="6">
+                  <b-col sm="5">
                     <b-button
                       type="button"
                       variant="light"
