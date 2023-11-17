@@ -78,8 +78,10 @@ class UserService
 
     public function searchUser($searchTerm, $userId)
     {
-        return User::whereNotIn('_id', [$userId])->where('email', 'like', '%' . $searchTerm . '%')
-            ->orWhere('username', 'like', '%' . $searchTerm . '%')
+        return User::query()
+            ->whereNotIn('_id', [$userId])
+            ->where('username', 'LIKE', "%{$searchTerm}%") 
+            ->orWhere('email', 'LIKE', "%{$searchTerm}%") 
             ->paginate(50);
     }
 }
