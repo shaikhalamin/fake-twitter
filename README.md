@@ -18,7 +18,7 @@ Step 1: git clone https://github.com/shaikhalamin/fake-twitter.git
 
 Step 2: cd fake-twitter
 
-Step 3: sudo chmod +x setup.sh [Not needed if you can run docker and docker-compose without sudo]
+Step 3: sudo chmod +x setup.sh [Not needed if you can run docker and docker-compose without sudo then just run sh setup.sh ]
 
 Step 4: ./setup.sh
 

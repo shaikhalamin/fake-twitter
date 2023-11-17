@@ -27,6 +27,8 @@ docker exec -it backend-container php artisan cache:clear
 # docker exec -it backend-container php artisan config:cache
 echo "Migrating backend schema...."
 docker exec -it backend-container php artisan migrate:fresh
+echo "Generating demo seed data"
+docker exec -it backend-container php artisan db:seed
 echo "Running lint on frontend container"
 docker exec -it frontend-container npm run lint
 
