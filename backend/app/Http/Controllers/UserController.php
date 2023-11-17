@@ -110,10 +110,9 @@ class UserController extends AbstractApiController
     public function searchUser(Request $request)
     {
         $searchTerm = $request->input('q');
-        $userId = auth()->user()->_id;
         $response = [
             'success' => true,
-            'data' => $this->userService->searchUser($searchTerm, $userId),
+            'data' => $this->userService->searchUser($searchTerm),
         ];
 
         return $this->apiSuccessResponse($response, RESPONSE::HTTP_CREATED);
