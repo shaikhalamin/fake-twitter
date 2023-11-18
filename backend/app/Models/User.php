@@ -28,6 +28,7 @@ class User extends Authenticatable
         'location',
         'avatar',
         'refresh_token',
+        'image_id',
     ];
 
     /**

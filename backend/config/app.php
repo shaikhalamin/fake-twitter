@@ -54,6 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
     'host_port' => env('HOST_PORT', 9000),
+    'upload_driver' => env('UPLOAD_DRIVER', 'local'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -162,6 +163,12 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+
+        /*
+        * Cloudinary service provider
+        */
+
+        CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
 
         /*
          * Package Service Providers...

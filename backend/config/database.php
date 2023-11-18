@@ -93,11 +93,13 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'host' => env('MONGO_DB_HOST', 'mongodb_twitter_container'),
-            'port' => intval(env('MONGO_DATABASE_PORT', 27017)),
-            'database' => env('MONGO_INITDB_DATABASE', 'twitter_app'),
-            'username' => env('MONGO_INITDB_ROOT_USERNAME', 'root'),
-            'password' => env('MONGO_INITDB_ROOT_PASSWORD', 12345678),
+            'dsn'      => env('DB_DSN'),
+            // 'host' => env('MONGO_DB_HOST', 'mongodb_twitter_container'),
+            // 'port' => intval(env('MONGO_DATABASE_PORT', 27017)),
+            // 'database' => env('MONGO_INITDB_DATABASE', 'twitter_app'),
+            // 'username' => env('MONGO_INITDB_ROOT_USERNAME', 'root'),
+            // 'password' => env('MONGO_INITDB_ROOT_PASSWORD', 12345678),
+
             // 'options' => [
             //     'appname' => 'homestead',
             // ],

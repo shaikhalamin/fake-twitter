@@ -47,7 +47,7 @@ class UserController extends AbstractApiController
     {
         $response = [
             'success' => true,
-            'data' => $this->userService->create($request->validated()),
+            'data' => $this->userService->create($request->validated(), ['type' => 'user']),
         ];
 
         return $this->apiSuccessResponse($response, RESPONSE::HTTP_CREATED);
@@ -78,13 +78,14 @@ class UserController extends AbstractApiController
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $fileName = null;
+        $uploadedFile = [];
         if ($request->hasFile('avatar')) {
-            $fileName = $this->fileService->upload($user, $request->file('avatar'));
+            $this->fileService->destroy($user->image_id);
+            $uploadedFile = $this->fileService->upload($request->file('avatar'), ['type' => 'user']);
         }
         $payload = $request->validated();
-        if ($fileName) {
-            $payload['avatar'] = $fileName;
+        if (count($uploadedFile) > 0) {
+            $payload = [...$payload, ...$uploadedFile];
         }
         $updatedUser = $this->userService->update($payload, $user);
 

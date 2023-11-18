@@ -27,6 +27,7 @@ class UserService
             ...$data,
             'password' => Hash::make($data['password']),
             'avatar' => 'https://res.cloudinary.com/deundpsr2/image/upload/v1700135801/general/user/ameotogmx5u2fjhnv73r.jpg',
+            'image_id'=> '',
             'location' => 'Dhaka, Bangladesh',
             'bio' => 'A human being'
         ];
