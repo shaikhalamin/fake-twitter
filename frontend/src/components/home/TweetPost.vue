@@ -22,7 +22,11 @@
               @click="postTweet()"
               class="btn btn-block tweet-btn mt-2 border"
             >
-              <span>Post</span>
+              <span v-if="loading == false">Post</span>
+              <span v-if="loading == true">
+                <b-icon icon="circle-fill" animation="throb" font-scale="1.5" />
+                Posting...
+              </span>
             </b-button>
           </b-col>
         </b-row>
@@ -37,15 +41,18 @@ export default {
   name: 'TweetPost',
   data () {
     return {
-      tweet: ''
+      tweet: '',
+      loading: false
     }
   },
   methods: {
     async postTweet () {
+      this.loading = true
       const payload = {
         content: this.tweet
       }
       createTweet(payload).then(() => {
+        this.loading = false
         this.tweet = ''
         this.$emit('onTweetCreated', 'updating tweet list ....')
       })

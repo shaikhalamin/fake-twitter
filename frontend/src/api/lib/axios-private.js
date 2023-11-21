@@ -3,7 +3,7 @@ import { API_URLS } from '../api-urls'
 
 import { memoizedRefreshToken } from './refresh-token'
 
-axios.defaults.baseURL = `${API_URLS.base_url}/api`
+axios.defaults.baseURL = `${API_URLS.base_url}/v1`
 
 axios.interceptors.request.use(
   async (config) => {

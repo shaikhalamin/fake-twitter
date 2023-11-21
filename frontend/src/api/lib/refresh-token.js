@@ -5,6 +5,7 @@ import {
   removeLocalSession,
   updateLocalSession
 } from '../local-storage'
+import { FE_BASE } from '../api-urls'
 
 const refreshTokenFn = async () => {
   const userSession = getLocalSession()
@@ -21,6 +22,8 @@ const refreshTokenFn = async () => {
     )
     const newSession = response.data
 
+    console.log('access token from refresh token', newSession)
+
     if (!newSession?.access_token) {
       removeLocalSession()
     }
@@ -29,11 +32,11 @@ const refreshTokenFn = async () => {
   } catch (error) {
     console.log('Axios error data fetching ..', error)
     removeLocalSession()
-    window.location.href = 'http://localhost:7890'
+    window.location.href = FE_BASE
   }
 }
 
-const maxAge = 1000000
+const maxAge = 100000
 
 export const memoizedRefreshToken = mem(refreshTokenFn, {
   maxAge

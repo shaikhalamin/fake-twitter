@@ -13,80 +13,49 @@
             <b-form @submit.stop.prevent="onSubmit" v-if="show">
               <b-row class="py-2">
                 <b-col sm="12">
-                  <b-form-input
-                    id="name"
-                    placeholder="Name"
-                    name="name"
-                    v-model="$v.form.name.$model"
-                    :state="validateState('name')"
-                    aria-describedby="input-name-feedback"
-                  ></b-form-input>
-                  <b-form-invalid-feedback id="input-name-feedback"
-                    >Name is required and must be at least 3
-                    characters</b-form-invalid-feedback
-                  >
+                  <b-form-input id="name" placeholder="Name" name="name" v-model="$v.form.name.$model"
+                    :state="validateState('name')" aria-describedby="input-name-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-name-feedback">Name is required and must be at least 3
+                    characters</b-form-invalid-feedback>
                 </b-col>
               </b-row>
 
               <b-row class="py-2">
                 <b-col sm="12">
-                  <b-form-input
-                    id="username"
-                    placeholder="Username"
-                    name="username"
-                    v-model="$v.form.username.$model"
-                    :state="validateState('username')"
-                    aria-describedby="input-username-feedback"
-                  ></b-form-input>
-                  <b-form-invalid-feedback id="input-username-feedback"
-                    >Username is required and must be at least 3
-                    characters</b-form-invalid-feedback
-                  >
+                  <b-form-input id="username" placeholder="Username" name="username" v-model="$v.form.username.$model"
+                    :state="validateState('username')" aria-describedby="input-username-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-username-feedback">Username is required and must be at least 3
+                    characters</b-form-invalid-feedback>
                 </b-col>
               </b-row>
 
               <b-row class="py-2">
                 <b-col sm="12">
-                  <b-form-input
-                    id="email"
-                    placeholder="Email"
-                    name="username"
-                    v-model="$v.form.email.$model"
-                    :state="validateState('email')"
-                    aria-describedby="input-email-feedback"
-                  ></b-form-input>
-                  <b-form-invalid-feedback id="input-email-feedback"
-                    >Email is required and must be type
-                    email</b-form-invalid-feedback
-                  >
+                  <b-form-input id="email" placeholder="Email" name="username" v-model="$v.form.email.$model"
+                    :state="validateState('email')" aria-describedby="input-email-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-email-feedback">Email is required and must be type
+                    email</b-form-invalid-feedback>
                 </b-col>
               </b-row>
 
               <b-row class="py-2">
                 <b-col sm="12">
-                  <b-form-input
-                    id="password"
-                    placeholder="Password"
-                    name="password"
-                    v-model="$v.form.password.$model"
-                    :state="validateState('password')"
-                    aria-describedby="input-password-feedback"
-                  ></b-form-input>
-                  <b-form-invalid-feedback id="input-password-feedback"
-                    >Password is required must be at least 6
-                    characters</b-form-invalid-feedback
-                  >
+                  <b-form-input id="password" placeholder="Password" name="password" v-model="$v.form.password.$model"
+                    :state="validateState('password')" aria-describedby="input-password-feedback"></b-form-input>
+                  <b-form-invalid-feedback id="input-password-feedback">Password is required must be at least 6
+                    characters</b-form-invalid-feedback>
                 </b-col>
               </b-row>
 
               <b-row class="py-4">
                 <b-col sm="6" offset-sm="3">
-                  <b-button
-                    type="submit"
-                    variant="primary"
-                    class="btn btn-block signup-btn mt-2"
-                    >Create an account</b-button
-                  >
+                  <b-button type="submit" variant="primary" class="btn btn-block signup-btn mt-2">
+                    <span v-if="loading == false">Create an account</span>
+                    <span v-if="loading == true">
+                      <b-icon icon="circle-fill" animation="throb" font-scale="1.2" />
+                      Creating...
+                    </span>
+                  </b-button>
                 </b-col>
               </b-row>
 
@@ -99,12 +68,8 @@
                   </b-row>
                   <b-row class="">
                     <b-col sm="6" offset-sm="3">
-                      <b-button
-                        type="button"
-                        variant="light"
-                        @click="redirectToSignIn()"
-                        class="btn btn-block signin-btn mt-2 border"
-                      >
+                      <b-button type="button" variant="light" @click="redirectToSignIn()"
+                        class="btn btn-block signin-btn mt-2 border">
                         <span>Sign in </span>
                       </b-button>
                     </b-col>
@@ -134,7 +99,8 @@ export default {
         email: null,
         password: null
       },
-      show: true
+      show: true,
+      loading: false
     }
   },
   validations: {
@@ -159,7 +125,7 @@ export default {
   },
   methods: {
     redirectToSignIn: function () {
-      this.$router.push('/signin').catch(() => {})
+      this.$router.push('/signin').catch(() => { })
     },
     validateState (name) {
       const { $dirty, $error } = this.$v.form[name]
@@ -171,11 +137,22 @@ export default {
         return
       }
       try {
+        this.loading = true
         const result = await createUser(this.form)
         console.log('User created successfully ', result.data)
+        this.loading = false
         this.redirectToSignIn()
       } catch (err) {
-        console.log('user create error ', err)
+        this.loading = false
+        const statusCode = err?.response?.status
+        if (err.name === 'AxiosError' && statusCode === 422) {
+          const errors = err?.response?.data?.errors
+          for (const key in errors) {
+            alert(errors[key][0])
+          }
+        } else {
+          alert('Something went wrong ! Please try again')
+        }
       }
     }
   }

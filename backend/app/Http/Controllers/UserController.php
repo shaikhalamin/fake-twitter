@@ -79,14 +79,14 @@ class UserController extends AbstractApiController
     public function update(UpdateUserRequest $request, User $user)
     {
         $uploadedFile = [];
-        if ($request->hasFile('avatar')) {
-            $this->fileService->destroy($user->image_id);
-            $uploadedFile = $this->fileService->upload($request->file('avatar'), ['type' => 'user']);
-        }
+        // if ($request->hasFile('avatar')) {
+        //     $this->fileService->destroy($user->image_id);
+        //     $uploadedFile = $this->fileService->upload($request->file('avatar'), ['type' => 'user']);
+        // }
         $payload = $request->validated();
-        if (count($uploadedFile) > 0) {
-            $payload = [...$payload, ...$uploadedFile];
-        }
+        // if (count($uploadedFile) > 0) {
+        //     $payload = [...$payload, ...$uploadedFile];
+        // }
         $updatedUser = $this->userService->update($payload, $user);
 
         $response = [

@@ -37,10 +37,6 @@
   color: black;
 }
 
-.ml-10 {
-  margin-left: 10px !important;
-}
-
 .arrow-cursor {
   cursor: pointer;
 }
@@ -52,9 +48,25 @@
   font-weight: 400;
 }
 
+.mli-5 {
+  margin-left: 5px !important;
+}
+
+.ml-10 {
+  margin-left: 10px !important;
+}
+
 .ft-20 {
   font-size: 20px;
   font-weight: bold;
+}
+
+.ft-13 {
+  font-size: 13px;
+}
+
+.ft-14 {
+  font-size: 14px;
 }
 
 .ft-15 {

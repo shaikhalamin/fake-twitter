@@ -25,6 +25,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/file', function (Request  $request) {
+    if($request->hasFile('image')){
+       return ['msg' => $request->all(),'ext'=>$request->file('image')->getClientOriginalExtension()];
+    }
+    //$request->file('avatar')
+    return ['msg' => $request->all()];
+});
+
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/refresh', [AuthController::class, 'refresh']);
 Route::get('/users/search', [UserController::class, 'searchUser']);

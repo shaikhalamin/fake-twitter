@@ -19,6 +19,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/file', function (Request  $request) {
+
+    return ['msg' => $request->all()];
+});
+
 
 Route::get('/ping', function (Request  $request) {
     $connection = DB::connection('mongodb');

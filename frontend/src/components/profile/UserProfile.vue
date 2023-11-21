@@ -1,18 +1,17 @@
 <template>
   <div>
+    <b-container v-if="loading" class="py-5 mt-5 mb-5">
+      <b-col class="py-5 mt-5 mb-5 border">
+        <h6 class="text-center"><b-icon icon="circle-fill" animation="throb" font-scale="1.2"></b-icon> Fetching...</h6>
+      </b-col>
+    </b-container>
     <b-container class="mt-3" v-if="profile && Object.keys(profile).length > 0">
       <b-row>
         <b-col>
           <b-row>
             <b-col sm="1">
               <span class="arrow-cursor" @click="redirectToTimeLine()">
-                <b-icon
-                  icon="arrow-left"
-                  scale="1.5"
-                  variant="dark"
-                  class="text-center"
-                ></b-icon
-              ></span>
+                <b-icon icon="arrow-left" scale="1.5" variant="dark" class="text-center"></b-icon></span>
             </b-col>
             <b-col sm="11">
               <h4>{{ profile.name }}</h4>
@@ -21,28 +20,15 @@
 
           <b-row class="mb-3 mt-1">
             <b-col sm="4">
-              <b-img
-                rounded="circle"
-                fluid
-                :src="profile.avatar"
-                :alt="profile.name"
-              ></b-img>
+              <b-img rounded="circle" fluid :src="profile.avatar" :alt="profile.name"></b-img>
             </b-col>
             <b-col sm="4"></b-col>
-            <b-col
-              sm="4"
-              v-if="
-                tokenUser &&
-                Object.keys(tokenUser).length > 0 &&
-                tokenUser.user._id === profile._id
-              "
-            >
-              <b-button
-                type="button"
-                variant="light"
-                @click="editProdile(profile.username)"
-                class="btn btn-block edit-profile-btn border"
-              >
+            <b-col sm="4" v-if="tokenUser &&
+              Object.keys(tokenUser).length > 0 &&
+              tokenUser.user._id === profile._id
+              ">
+              <b-button type="button" variant="light" @click="editProdile(profile.username)"
+                class="btn btn-block edit-profile-btn border">
                 <span class="">Edit Profile</span>
               </b-button>
             </b-col>
@@ -55,20 +41,12 @@
                   <div class="ft-20">{{ profile.name }}</div>
                   <div>@{{ profile.username }}</div>
                 </b-col>
-                <b-col
-                  sm="4"
-                  v-if="
-                    tokenUser &&
-                    Object.keys(tokenUser).length > 0 &&
-                    tokenUser.user._id !== profile._id
-                  "
-                >
-                  <b-button
-                    type="button"
-                    variant="light"
-                    class="btn btn-block following-btn border"
-                    @click="follow(profile._id)"
-                  >
+                <b-col sm="4" v-if="tokenUser &&
+                  Object.keys(tokenUser).length > 0 &&
+                  tokenUser.user._id !== profile._id
+                  ">
+                  <b-button type="button" variant="light" class="btn btn-block following-btn border"
+                    @click="follow(profile._id)">
                     <span class="">{{ followUnfollowText }}</span>
                   </b-button>
                 </b-col>
@@ -84,27 +62,16 @@
                     <b-nav-item>
                       <div>
                         <span>
-                          <b-icon
-                            icon="geo-alt"
-                            scale="0.8"
-                            variant="dark"
-                          ></b-icon
-                        ></span>
+                          <b-icon icon="geo-alt" scale="0.8" variant="dark"></b-icon></span>
                         <span class="profile-info">{{ profile.location }}</span>
                       </div>
                     </b-nav-item>
                     <b-nav-item v-if="profile && profile?.created_at">
                       <div>
                         <span>
-                          <b-icon
-                            icon="calendar3"
-                            scale="0.8"
-                            variant="dark"
-                          ></b-icon
-                        ></span>
+                          <b-icon icon="calendar3" scale="0.8" variant="dark"></b-icon></span>
                         <span class="profile-info">
-                          Joined {{ userJoined }}</span
-                        >
+                          Joined {{ userJoined }}</span>
                       </div>
                     </b-nav-item>
                   </b-nav>
@@ -133,30 +100,20 @@
                   <b-card title="Card Title" no-body>
                     <b-card-header header-tag="nav">
                       <b-nav card-header tabs>
-                        <b-nav-item
-                          :active="isTabActive('posts')"
-                          @click="setActive('posts')"
-                          ><span class="text-dark">Posts</span></b-nav-item
-                        >
-                        <b-nav-item
-                          :active="isTabActive('following')"
-                          @click="setActive('following')"
-                          ><span class="text-dark">Following</span>
+                        <b-nav-item :active="isTabActive('posts')" @click="setActive('posts')"><span
+                            class="text-dark">Posts</span></b-nav-item>
+                        <b-nav-item :active="isTabActive('following')" @click="setActive('following')"><span
+                            class="text-dark">Following</span>
                         </b-nav-item>
-                        <b-nav-item
-                          :active="isTabActive('follower')"
-                          @click="setActive('follower')"
-                          ><span class="text-dark">Followers</span>
+                        <b-nav-item :active="isTabActive('follower')" @click="setActive('follower')"><span
+                            class="text-dark">Followers</span>
                         </b-nav-item>
                       </b-nav>
                     </b-card-header>
 
                     <b-card-body>
                       <div v-if="tab_active === 'posts'">
-                        <UserTweets
-                          @onLiked="updateTweetList"
-                          :tweets="profile.tweets"
-                        />
+                        <UserTweets @onLiked="updateTweetList" :tweets="profile.tweets" />
                       </div>
                       <div v-if="tab_active === 'following'">
                         <UserFollowings :followers="profile.followers" />
@@ -195,7 +152,8 @@ export default {
   data () {
     return {
       profile: null,
-      tab_active: 'posts'
+      tab_active: 'posts',
+      loading: false
     }
   },
   created () {
@@ -225,7 +183,9 @@ export default {
   methods: {
     async getProfile () {
       const username = this.$route.params.username
+      this.loading = true
       const userProfile = await getUserProfile(username)
+      this.loading = false
       this.profile = userProfile.data.data
     },
     setActive (tab) {
@@ -235,10 +195,10 @@ export default {
       return this.tab_active === tab
     },
     redirectToTimeLine () {
-      this.$router.push('/timeline').catch(() => {})
+      this.$router.push('/timeline').catch(() => { })
     },
     editProdile (username) {
-      this.$router.push(`/profile/edit/${username}`).catch(() => {})
+      this.$router.push(`/profile/edit/${username}`).catch(() => { })
     },
     async follow (followeeId) {
       const payload = {
