@@ -5,10 +5,11 @@
     ```bash
         
         1. User can sign up and sign in
-        2. User can update profile info and update avatar icon
-        3. User can post tweet and like tweet
-        4. User can post follow and unfollow other user
-        5. User can search other user by username or email
+        2. JWT Authentication with access token and refresh token
+        3. User can update profile info and update avatar icon
+        4. User can post tweet and like tweet
+        5. User can post follow and unfollow other user
+        6. User can search other user by username or email
     ```
 ## Project Run Instruction
 
